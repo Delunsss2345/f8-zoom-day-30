@@ -17,20 +17,21 @@ backDrop.onclick = () => {
     modal.classList.toggle('show');
 }
 
-// URL của API server
+
 const baseUrl = 'http://localhost:3000/todos';
 
-// Hàm gọi API với fetch
 const fetchApi = async (url, method = 'GET', body = null) => {
     try {
         const options = {
             method,
             headers: { 'Content-Type': 'application/json' }
         };
+
         if (body) options.body = JSON.stringify(body);
         const res = await fetch(url, options);
 
         if (!res.ok) throw new Error('Lỗi từ server');
+
         return await res.json();
     } catch (err) {
         console.error(err);
@@ -51,9 +52,6 @@ const loadTasks = async () => {
         showToast('error', 'Không thể tải danh sách task');
     }
 };
-
-
-
 
 // Hàm xử lý bật/tắt modal
 const handleToggleModal = (btn) => {
@@ -131,12 +129,12 @@ search.addEventListener("input", function () {
 
 // Hàm chỉnh sửa task
 const editTask = async (taskId) => {
-    const task = todoTasks.find(todo => todo.id === taskId); // Tìm task theo id
+    const task = todoTasks.find(todo => todo.id === taskId); 
 
     // Điền dữ liệu vào form
     Object.keys(task).forEach(key => {
         if (form[key]) {
-            form[key].value = task[key]; // Nếu không có giá trị thì để trống
+            form[key].value = task[key];
         }
     });
 
@@ -161,7 +159,6 @@ const delTask = async (taskId) => {
                 renderTask(todoTasks);
                 showToast('success', "Đã xóa task thành công");
             } catch (error) {
-                console.error('Lỗi khi xóa task:', error);
                 showToast('error', 'Không thể xóa task');
             }
         },
@@ -175,29 +172,27 @@ const delTask = async (taskId) => {
 const completeTask = async (taskId) => {
     try {
         const taskIndex = todoTasks.findIndex(todo => todo.id === taskId);
-
         const task = todoTasks[taskIndex];
-        const updatedTask = { ...task, isCompleted: !task.isCompleted };
+        console.log(task)
 
         // Cập nhật trên server
-        await fetchApi(`${baseUrl}/${taskId}`, 'PUT', updatedTask);
+        await fetchApi(`${baseUrl}/${taskId}`, 'PATCH', {isCompleted: !task.isCompleted});
         
         // Cập nhật trong mảng local
-        todoTasks[taskIndex] = updatedTask;
+        todoTasks[taskIndex].isCompleted = !task.isCompleted
         
         // Render lại và giữ tab hiện tại
         const activeTab = [...tabList].findIndex(tab => tab.classList.contains('active'));
         filterActive(activeTab);
         
-        showToast('success', updatedTask.isCompleted ? 'Đã đánh dấu hoàn thành' : 'Đã đánh dấu chưa hoàn thành');
+        showToast(task.isCompleted  ? 'success' : "warning", task.isCompleted ? 'Đã đánh dấu hoàn thành' : 'Đã đánh dấu chưa hoàn thành');
     } catch (error) {
-        console.error('Lỗi khi cập nhật task:', error);
         showToast('error', 'Không thể cập nhật trạng thái task');
     }
 };
 
 
-// Xử lý sự kiện click trên task grid (Event Delegation)
+// Xử lý sự kiện click trên task grid
 todoMain.onclick = (e) => {
     const taskCard = e.target.closest('.task-card');
     const taskId = taskCard?.dataset.taskId;
@@ -289,28 +284,23 @@ function renderTask(todos) {
     
     todoMain.innerHTML = ""; 
     
-    todos.forEach((task, index) => {
-        // Tạo thẻ task card
+    todos.forEach((task) => {
         const taskCard = document.createElement('div');
         taskCard.classList.add('task-card');
-        taskCard.dataset.taskId = task.id; // Sử dụng ID thật từ server
+        taskCard.dataset.taskId = task.id; 
         taskCard.classList.add(task.cardColor || 'blue');
             
-        // Thêm class completed nếu task đã hoàn thành
         if (task.isCompleted) {
             taskCard.classList.add('completed');
         }
 
-        // Tạo header của task
         const taskHeader = document.createElement('div');
         taskHeader.classList.add('task-header');
             
-        // Tạo tiêu đề task
         const taskTitle = document.createElement('h3');
         taskTitle.classList.add('task-title');
         taskTitle.textContent = task.title;
 
-        // Tạo menu button với dropdown
         const taskMenuButton = document.createElement('button');
         taskMenuButton.classList.add('task-menu');
         taskMenuButton.innerHTML = `
@@ -334,17 +324,14 @@ function renderTask(todos) {
         taskHeader.appendChild(taskTitle);
         taskHeader.appendChild(taskMenuButton);
 
-        // Tạo mô tả task
         const taskDescription = document.createElement('p');
         taskDescription.classList.add('task-description');
         taskDescription.textContent = task.description; 
 
-        // Tạo thời gian task
         const taskTime = document.createElement('div');
         taskTime.classList.add('task-time');
         taskTime.textContent = `${formatHoursAndMinutes(task.startTime)} - ${formatHoursAndMinutes(task.endTime)}`;
 
-        // Ghép các phần tử vào task card
         taskCard.appendChild(taskHeader);
         taskCard.appendChild(taskDescription);
         taskCard.appendChild(taskTime);
@@ -391,12 +378,12 @@ form.onsubmit = async function handleFormSubmit(e) {
 
         if (editingId) {
 
-            const existingTask = todoTasks.find(t => t.id === editingId);
-            if (existingTask) {
-                task.isCompleted = existingTask.isCompleted; // Giữ nguyên trạng thái hoàn thành
+            const existTask = todoTasks.find(t => t.id === editingId);
+            if (existTask) {
+                task.isCompleted = existTask.isCompleted; // Giữ nguyên trạng thái hoàn thành
             }
             
-            const updatedTask = await fetchApi(`${baseUrl}/${editingId}`, 'PUT', task);
+            const updatedTask = await fetchApi(`${baseUrl}/${editingId}`, 'PATCH', task);
             
             // Cập nhật trong mảng local
             const index = todoTasks.findIndex(t => t.id === editingId);
@@ -417,21 +404,9 @@ form.onsubmit = async function handleFormSubmit(e) {
         modal.classList.remove('show');
 
     } catch (error) {
-        console.error('Lỗi khi xử lý task:', error);
         showToast('error', 'Có lỗi xảy ra khi xử lý task');
     }
 }
 
 
-// Khởi tạo ứng dụng
-async function initApp() {
-    try {
-        await loadTasks();
-    } catch (error) {
-        console.error('Lỗi khởi tạo ứng dụng:', error);
-        showToast('error', 'Không thể khởi tạo ứng dụng');
-    }
-}
-
-// Bắt đầu ứng dụng
-initApp();
+loadTasks();
