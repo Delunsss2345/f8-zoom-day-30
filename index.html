@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Todo List - HealDocs</title>
+    <!-- Font Awesome CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- CSS -->
+    <link rel="stylesheet" href="./styles.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/notie/dist/notie.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/notie"></script>
+
+</head>
+
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <div class="logo">
+                <div class="logo-icon"></div>
+                <span class="logo-text">HealDocs</span>
+            </div>
+
+            <h1 class="header-title">Todo List</h1>
+
+            <div class="header-actions">
+                <button class="notification-btn">
+                    <i class="fa-solid fa-bell fa-icon"></i>
+                </button>
+                <div class="profile-avatar">
+                    <i class="fa-solid fa-user fa-icon"></i>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Controls Section -->
+        <div class="controls">
+            <div class="search-section">
+                <div class="search-container">
+                    <i class="fa-solid fa-magnifying-glass fa-icon search-icon"></i>
+                    <input type="text" class="search-input" placeholder="Search List">
+                </div>
+
+                <button class="add-btn">
+                    <i class="fa-solid fa-plus fa-icon"></i>
+                    Add New List
+                </button>
+            </div>
+        </div>
+
+        <!-- Tabs -->
+        <div class="tabs">
+            <div class="tab-list">
+                <button class="tab-button active">All Task</button>
+                <button class="tab-button">Active Task</button>
+                <button class="tab-button">Completed</button>
+            </div>
+        </div>
+
+        <!-- Task Grid -->
+        <div class="task-grid"></div>
+    </main>
+
+
+    <!-- Modal -->
+    <div id="taskModal" class="modal-wrapper">
+        <div class="modal-backdrop"></div>
+        <div class="modal">
+            <div class="modal-container">
+                <div class="modal-main">
+                    <div class="modal-header">
+                        <h2 class="modal-title">Add New List</h2>
+                        <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Provident, necessitatibus.</p>
+                        <button class="close-button">&times;</button>
+                    </div>
+
+                    <div class="modal-body">
+                        <form id="form" action="">
+                            <div class="input-group">
+                                <label for="title">Task Title<span style="color: red;">*</span></label>
+                                <input id="title" name="title" type="text" placeholder="Task Title*" />
+                            </div>
+
+                            <div class="input-group">
+                                <label for="startTime">Start Time<span style="color: red;">*</span></label>
+                                <input id="startTime" name="startTime" type="time" placeholder="Start Time" />
+                            </div>
+
+                            <div class="input-group">
+                                <label for="endTime">End Time<span style="color: red;">*</span></label>
+                                <input id="endTime" name="endTime" type="time" placeholder="End Time" />
+                            </div>
+
+                            <div class="input-group">
+                                <label for="DueDate">Due Date<span style="color: red;">*</span></label>
+                                <input id="DueDate" name="DueDate" type="date" placeholder="Due Date" />
+                            </div>
+
+                            <div class="input-group">
+                                <label for="priority">Priority<span style="color: red;">*</span></label>
+                                <select id="priority" name="priority">
+                                    <option value="Medium">Medium</option>
+                                    <option value="Normal">Normal</option>
+                                    <option value="Easy">Easy</option>
+                                </select>
+                            </div>
+
+                            <div class="input-group">
+                                <label for="category">Category<span style="color: red;">*</span></label>
+                                <select id="category" name="category">
+                                    <option value="Team Meeting">Team Meeting</option>
+                                    <option value="Work on Branding">Work on Branding</option>
+                                    <option value="Make a Report for client">Make a Report for client</option>
+                                    <option value="Create a planer">Create a planer</option>
+                                    <option value="Create Treatment Plan">Create Treatment Plan</option>
+                                </select>
+                            </div>
+
+                            <div class="input-group">
+                                <label for="cardColor">Card Color<span style="color: red;">*</span></label>
+                                <select id="cardColor" name="cardColor">
+                                    <option value="blue">Blue</option>
+                                    <option value="purple">Purple</option>
+                                    <option value="yellow">Yellow</option>
+                                    <option value="pink">Pink</option>
+                                    <option value="green">Green</option>
+                                </select>
+                            </div>
+
+                            <div class="input-group full-width">
+                                <label for="description">Description</label>
+                                <textarea id="description" name="description" placeholder="Description"></textarea>
+                            </div>
+
+                            <div class="modal-btn">
+                                <button type="button" class="cancel-button">Cancel</button>
+                                <button type="submit" class="add-new-button">Add New</button>
+                            </div>
+                        </form>
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    </div>
+    </div>
+    <script src="./main.js"></script>
+</body>
+
+</html>
